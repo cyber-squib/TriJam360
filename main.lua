@@ -41,4 +41,4 @@ function love.draw()
   --love.graphics.draw(_gfx.chair,500,200,0,-1,1)
 end
 
--- breaking
+-- working
