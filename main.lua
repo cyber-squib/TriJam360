@@ -7,15 +7,22 @@ _gfx.mouse = love.graphics.newImage("rsrc/mouse.png")
 _gfx.spit = love.graphics.newImage("rsrc/spit.png")
 _gfx.table = love.graphics.newImage("rsrc/table.png")
 
+_tune=love.audio.newSource("rsrc/tune.wav","static")
+_response=love.audio.newSource("rsrc/response.wav","static")
+_control=love.sound.newSoundData("rsrc/control.wav")
+
 love.window.setMode(1920,1080,{centered=true,borderless=true})
 
+_tune:play()
 
 function love.update()
 
 end
 
 function love.draw()
+
   love.graphics.clear(1,1,1,1)
+  love.graphics.setColor(1,1,1,1)
   love.graphics.translate(1920/2,1080*5/8)
   love.graphics.draw(_gfx.table,
       -_gfx.chair:getWidth()*1.25/2-25,
@@ -41,4 +48,23 @@ function love.draw()
       -_gfx.chair:getHeight()*1/2-450,
       0,1,1)
   --love.graphics.draw(_gfx.chair,500,200,0,-1,1)
+  
+  local a,si
+  si=_tune:tell("samples")
+  a=0
+  a=_control:getSample(si,2)
+  a=math.floor((a+1)/2*4)
+  --if a>2 then a=2 end
+  if a==-1 then a=0 end
+  --assert(a>=0,"a:"..a)
+  local w,z=-80,-460
+  for x=2,a,-1 do
+    love.graphics.setColor(1,1,1,1)
+    love.graphics.circle("fill",w+x*64,z,24)
+  end
+  
+end
+
+function love.mousepressed(x,y,b,t)
+
 end
