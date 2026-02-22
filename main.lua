@@ -11,11 +11,22 @@ _tune=love.audio.newSource("rsrc/tune.wav","static")
 _response=love.audio.newSource("rsrc/response.wav","static")
 _control=love.sound.newSoundData("rsrc/control.wav")
 
+_teach=0
+
 love.window.setMode(1920,1080,{centered=true,borderless=true})
 
 _tune:play()
 
 function love.update()
+
+  local a,si
+  si=_tune:tell("samples")
+  a=0
+  a=_control:getSample(si,1)
+  a=a/2+.5
+  if _teach and _teach <3 and a<.1 then
+    _tune:pause()
+  end
 
 end
 
@@ -50,10 +61,19 @@ function love.draw()
       _gfx.mouse:getWidth()*1.5/2+300,
       -_gfx.mouse:getHeight()*1.5/2-200,
       0,-1.5,1.5)
+      
+      
+  local a,si
+  si=_tune:tell("samples")
+  a=0
+  a=_control:getSample(si,1)
+  a=a/4+.5
+  a=1/a
+      
   love.graphics.draw(_gfx.dialogue,
-      -_gfx.chair:getWidth()*1/2-25,
-      -_gfx.chair:getHeight()*1/2-450,
-      0,1,1)
+      -_gfx.chair:getWidth()*1/2*a-25,
+      -_gfx.chair:getHeight()*1/2*a-450,
+      0,1*a,1*a)
   --love.graphics.draw(_gfx.chair,500,200,0,-1,1)
   
   local a,si
@@ -74,10 +94,18 @@ end
 
 function love.mousepressed(x,y,b,t)
 
+
+  
   local a,si
   si=_tune:tell("samples")
   a=0
   a=_control:getSample(si,1)
+  
+  if not _tune:isPlaying() then
+    _tune:play()
+    _tune:seek(si+3200,"samples")
+    if _teach then _teach=_teach+1 end
+  end
   
   local l=.01
   if -l<a and a<l then return end
