@@ -35,10 +35,17 @@ function love.draw()
       _gfx.chair:getWidth()/2+300,
       -_gfx.chair:getHeight()/2,
       0,-1,1)
-  love.graphics.draw(_gfx.mouse,
-      -_gfx.mouse:getWidth()*1.5/2-300,
-      -_gfx.mouse:getHeight()*1.5/2-200,
-      0,1.5,1.5)
+  if _response:isPlaying() then
+    love.graphics.draw(_gfx.spit,
+        -_gfx.spit:getWidth()*1.25/2-300,
+        -_gfx.spit:getHeight()*1.25/2-200,
+        0,1.25,1.25)
+  else
+    love.graphics.draw(_gfx.mouse,
+        -_gfx.mouse:getWidth()*1.5/2-300,
+        -_gfx.mouse:getHeight()*1.5/2-200,
+        0,1.5,1.5)
+  end
   love.graphics.draw(_gfx.mouse,
       _gfx.mouse:getWidth()*1.5/2+300,
       -_gfx.mouse:getHeight()*1.5/2-200,
@@ -66,5 +73,19 @@ function love.draw()
 end
 
 function love.mousepressed(x,y,b,t)
+
+  local a,si
+  si=_tune:tell("samples")
+  a=0
+  a=_control:getSample(si,1)
+  
+  local l=.01
+  if -l<a and a<l then return end
+  
+  a=a/2+.5
+  --assert(a>.75,"a:"..a)
+  if a<.75 then
+    _response:play()
+  end
 
 end
