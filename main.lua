@@ -8,6 +8,18 @@ _gfx.spit = love.graphics.newImage("rsrc/spit.png")
 _gfx.table = love.graphics.newImage("rsrc/table.png")
 _gfx.flag = love.graphics.newImage("rsrc/flag.png")
 
+_gfx.number={}
+_gfx.number[01]= love.graphics.newImage("rsrc/number0.png")
+_gfx.number[02]= love.graphics.newImage("rsrc/number1.png")
+_gfx.number[03]= love.graphics.newImage("rsrc/number2.png")
+_gfx.number[04]= love.graphics.newImage("rsrc/number3.png")
+_gfx.number[05]= love.graphics.newImage("rsrc/number4.png")
+_gfx.number[06]= love.graphics.newImage("rsrc/number5.png")
+_gfx.number[07]= love.graphics.newImage("rsrc/number6.png")
+_gfx.number[08]= love.graphics.newImage("rsrc/number7.png")
+_gfx.number[09]= love.graphics.newImage("rsrc/number8.png")
+_gfx.number[10]= love.graphics.newImage("rsrc/number9.png")
+
 _tune=love.audio.newSource("rsrc/tune.wav","static")
 _response=love.audio.newSource("rsrc/response.wav","static")
 _control=love.sound.newSoundData("rsrc/control.wav")
@@ -69,9 +81,15 @@ function love.draw()
   si=_tune:tell("samples")
   a=0
   a=_control:getSample(si,1)
+  
+  local l=.01
+  ---if -l<a and a<l then return end
+  
   a=a/4+.5
   a=1/a
       
+
+  
   love.graphics.draw(_gfx.dialogue,
       -_gfx.chair:getWidth()*1/2*a-25,
       -_gfx.chair:getHeight()*1/2*a-450,
@@ -92,12 +110,29 @@ function love.draw()
     love.graphics.circle("fill",w+x*64,z,24)
   end
   
-  for x=0,_score-1 do
-    love.graphics.draw(_gfx.flag,
-        _gfx.flag:getWidth()/2-200+x*30,
-        -_gfx.flag:getHeight()/2+300,
-        0,1/2,1/2)
-  end
+  --for x=0,_score-1 do
+  --  love.graphics.draw(_gfx.flag,
+  --      _gfx.flag:getWidth()/2-200+x*30,
+  --      -_gfx.flag:getHeight()/2+300,
+  --      0,1/2,1/2)
+  --end
+  
+  love.graphics.draw(_gfx.flag,
+      _gfx.flag:getWidth()/2-200,
+      -_gfx.flag:getHeight()/2+300,
+      0,1/2,1/2)
+      
+  local f=math.floor(_score%10)
+  local s=math.floor(_score/10)
+  love.graphics.draw(_gfx.number[f+1],
+      _gfx.flag:getWidth()/1.25-40,
+      -_gfx.flag:getHeight()/1.25+375,
+      0,1/1.25,1/1.25)
+  love.graphics.draw(_gfx.number[s+1],
+      _gfx.flag:getWidth()/1.25-60-40,
+      -_gfx.flag:getHeight()/1.25+375,
+      0,1/1.25,1/1.25)
+  
   
 end
 
