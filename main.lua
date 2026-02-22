@@ -1,4 +1,4 @@
--- breaking
+-- working
 
 _gfx={}
 _gfx.chair = love.graphics.newImage("rsrc/chair.png")
@@ -101,7 +101,7 @@ function love.draw()
   
 end
 
-function love.mousepressed(x,y,b,t)
+function _press(x,y,b,t)
 
 
   
@@ -125,5 +125,23 @@ function love.mousepressed(x,y,b,t)
     _response:play()
     _score=_score+1
   end
+
+end
+
+function love.mousepressed(x,y,b,t)
+
+  _press()
+
+end
+
+function love.keypressed()
+
+  _press()
+
+end
+
+function love.gamepadpressed()
+
+  _press()
 
 end
