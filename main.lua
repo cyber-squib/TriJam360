@@ -6,12 +6,14 @@ _gfx.dialogue = love.graphics.newImage("rsrc/dialogue.png")
 _gfx.mouse = love.graphics.newImage("rsrc/mouse.png")
 _gfx.spit = love.graphics.newImage("rsrc/spit.png")
 _gfx.table = love.graphics.newImage("rsrc/table.png")
+_gfx.flag = love.graphics.newImage("rsrc/flag.png")
 
 _tune=love.audio.newSource("rsrc/tune.wav","static")
 _response=love.audio.newSource("rsrc/response.wav","static")
 _control=love.sound.newSoundData("rsrc/control.wav")
 
 _teach=0
+_score=0
 
 love.window.setMode(1920,1080,{centered=true,borderless=true})
 
@@ -90,6 +92,13 @@ function love.draw()
     love.graphics.circle("fill",w+x*64,z,24)
   end
   
+  for x=0,_score-1 do
+    love.graphics.draw(_gfx.flag,
+        _gfx.flag:getWidth()/2-200+x*30,
+        -_gfx.flag:getHeight()/2+300,
+        0,1/2,1/2)
+  end
+  
 end
 
 function love.mousepressed(x,y,b,t)
@@ -114,6 +123,7 @@ function love.mousepressed(x,y,b,t)
   --assert(a>.75,"a:"..a)
   if a<.75 then
     _response:play()
+    _score=_score+1
   end
 
 end
