@@ -1,3 +1,5 @@
+-- working
+
 _gfx={}
 _gfx.chair = love.graphics.newImage("rsrc/chair.png")
 _gfx.dialogue = love.graphics.newImage("rsrc/dialogue.png")
@@ -40,5 +42,3 @@ function love.draw()
       0,1,1)
   --love.graphics.draw(_gfx.chair,500,200,0,-1,1)
 end
-
--- working
