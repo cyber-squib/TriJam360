@@ -24,6 +24,7 @@ _gfx.number[10]= love.graphics.newImage("rsrc/number9.png")
 
 _tune=love.audio.newSource("rsrc/tune.wav","static")
 _response=love.audio.newSource("rsrc/response.wav","static")
+_oops=love.audio.newSource("rsrc/oops.wav","static")
 _control=love.sound.newSoundData("rsrc/control.wav")
 
 _teach=0
@@ -33,6 +34,8 @@ love.window.setMode(1920,1080,{centered=true,borderless=true})
 
 _tune:play()
 
+_unfinished=false
+
 function love.update()
 
   local a,si
@@ -40,8 +43,10 @@ function love.update()
   a=0
   a=_control:getSample(si,1)
   a=a/2+.5
+  if a>.75 then _hit=false end
   if _teach and _teach<3 and a<.3 then
     _tune:pause()
+    _unfinished=true
   end
 
 end
@@ -83,6 +88,8 @@ function love.draw()
   si=_tune:tell("samples")
   a=0
   a=_control:getSample(si,1)
+  b=0
+  b=_control:getSample(si+600,1)
   
   
   local xo=-50
@@ -109,8 +116,16 @@ function love.draw()
       0,1/1.25,1/1.25)
   
   
-  local l=.01
-  if -l<a and a<l then return end
+  local l=.008
+  if -l<a and a<l and -l<b and b<l then
+  
+  love.graphics.draw(_gfx.title,
+      _gfx.title:getWidth()/1.25-60-40-650,
+      -_gfx.title:getHeight()/1.25+375-700,
+      0,1/1.25,1/1.25)
+  
+    return
+  end
   
   a=a/4+.5
   a=1/a
@@ -158,11 +173,13 @@ function _press(x,y,b,t)
   a=0
   a=_control:getSample(si,1)
   
-  if not _tune:isPlaying() then
+  if not _tune:isPlaying() and _unfinished then
+    _unfinished=false
     _tune:play()
     _tune:seek(si+8000,"samples")
     _score=_score+1
     _response:play()
+    _oopsy=false
     if _teach then _teach=_teach+1 end
   end
   
@@ -171,9 +188,15 @@ function _press(x,y,b,t)
   
   a=a/2+.5
   --assert(a>.75,"a:"..a)
-  if _teach and _teach>=3 and a<.75 then
+  if _teach and _teach>=3 and a<.75 and not _hit then
     _response:play()
     _score=_score+1
+    _oopsy=false
+    _hit=true
+  elseif _teach>=3 and not _oopsy then
+    _oops:play()
+    if _score>0 then _score=_score-1 end
+    _oopsy=true
   end
 
 end
