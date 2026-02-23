@@ -38,7 +38,7 @@ function love.update()
   a=0
   a=_control:getSample(si,1)
   a=a/2+.5
-  if _teach and _teach <3 and a<.1 then
+  if _teach and _teach<3 and a<.4 then
     _tune:pause()
   end
 
@@ -82,8 +82,26 @@ function love.draw()
   a=0
   a=_control:getSample(si,1)
   
+  
+  love.graphics.draw(_gfx.flag,
+      _gfx.flag:getWidth()/2-200,
+      -_gfx.flag:getHeight()/2+300,
+      0,1/2,1/2)
+      
+  local f=math.floor(_score%10)
+  local s=math.floor(_score/10)
+  love.graphics.draw(_gfx.number[f+1],
+      _gfx.flag:getWidth()/1.25-40,
+      -_gfx.flag:getHeight()/1.25+375,
+      0,1/1.25,1/1.25)
+  love.graphics.draw(_gfx.number[s+1],
+      _gfx.flag:getWidth()/1.25-60-40,
+      -_gfx.flag:getHeight()/1.25+375,
+      0,1/1.25,1/1.25)
+  
+  
   local l=.01
-  ---if -l<a and a<l then return end
+  if -l<a and a<l then return end
   
   a=a/4+.5
   a=1/a
@@ -117,21 +135,7 @@ function love.draw()
   --      0,1/2,1/2)
   --end
   
-  love.graphics.draw(_gfx.flag,
-      _gfx.flag:getWidth()/2-200,
-      -_gfx.flag:getHeight()/2+300,
-      0,1/2,1/2)
-      
-  local f=math.floor(_score%10)
-  local s=math.floor(_score/10)
-  love.graphics.draw(_gfx.number[f+1],
-      _gfx.flag:getWidth()/1.25-40,
-      -_gfx.flag:getHeight()/1.25+375,
-      0,1/1.25,1/1.25)
-  love.graphics.draw(_gfx.number[s+1],
-      _gfx.flag:getWidth()/1.25-60-40,
-      -_gfx.flag:getHeight()/1.25+375,
-      0,1/1.25,1/1.25)
+
   
   
 end
@@ -147,7 +151,9 @@ function _press(x,y,b,t)
   
   if not _tune:isPlaying() then
     _tune:play()
-    _tune:seek(si+3200,"samples")
+    _tune:seek(si+10000,"samples")
+    _score=_score+1
+    _response:play()
     if _teach then _teach=_teach+1 end
   end
   
@@ -156,7 +162,7 @@ function _press(x,y,b,t)
   
   a=a/2+.5
   --assert(a>.75,"a:"..a)
-  if a<.75 then
+  if _teach and _teach>=3 and a<.75 then
     _response:play()
     _score=_score+1
   end
