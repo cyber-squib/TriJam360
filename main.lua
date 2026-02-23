@@ -7,6 +7,8 @@ _gfx.mouse = love.graphics.newImage("rsrc/mouse.png")
 _gfx.spit = love.graphics.newImage("rsrc/spit.png")
 _gfx.table = love.graphics.newImage("rsrc/table.png")
 _gfx.flag = love.graphics.newImage("rsrc/flag.png")
+_gfx.times = love.graphics.newImage("rsrc/times.png")
+_gfx.title = love.graphics.newImage("rsrc/title.png")
 
 _gfx.number={}
 _gfx.number[01]= love.graphics.newImage("rsrc/number0.png")
@@ -38,7 +40,7 @@ function love.update()
   a=0
   a=_control:getSample(si,1)
   a=a/2+.5
-  if _teach and _teach<3 and a<.4 then
+  if _teach and _teach<3 and a<.3 then
     _tune:pause()
   end
 
@@ -83,19 +85,26 @@ function love.draw()
   a=_control:getSample(si,1)
   
   
+  local xo=-50
+  
   love.graphics.draw(_gfx.flag,
-      _gfx.flag:getWidth()/2-200,
+      _gfx.flag:getWidth()/2-200+xo,
       -_gfx.flag:getHeight()/2+300,
+      0,1/2,1/2)
+      
+  love.graphics.draw(_gfx.times,
+      _gfx.times:getWidth()/2-200+175+xo,
+      -_gfx.times:getHeight()/2+300-25,
       0,1/2,1/2)
       
   local f=math.floor(_score%10)
   local s=math.floor(_score/10)
   love.graphics.draw(_gfx.number[f+1],
-      _gfx.flag:getWidth()/1.25-40,
+      _gfx.flag:getWidth()/1.25-40+xo,
       -_gfx.flag:getHeight()/1.25+375,
       0,1/1.25,1/1.25)
   love.graphics.draw(_gfx.number[s+1],
-      _gfx.flag:getWidth()/1.25-60-40,
+      _gfx.flag:getWidth()/1.25-60-40+xo,
       -_gfx.flag:getHeight()/1.25+375,
       0,1/1.25,1/1.25)
   
@@ -151,7 +160,7 @@ function _press(x,y,b,t)
   
   if not _tune:isPlaying() then
     _tune:play()
-    _tune:seek(si+10000,"samples")
+    _tune:seek(si+8000,"samples")
     _score=_score+1
     _response:play()
     if _teach then _teach=_teach+1 end
