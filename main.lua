@@ -1,4 +1,5 @@
 -- breaking
+-- dev time: 3 hours 43 minutes
 
 _gfx={}
 _gfx.chair = love.graphics.newImage("rsrc/chair.png")
